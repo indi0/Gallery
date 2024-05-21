@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <title>Gallery</title>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+</head>
+
+<body>
+   <div id="bg">
+      <div class="container">
+         <div class="indicator">
+            <span class="alt-text"></span>
+            <div class="contact">
+               <a href="#" target="_blank">Email</a><br>
+               <a href="#" target="_blank">GitHub</a><br>
+               <a href="#" target="_blank">LinkedIn</a>
+            </div>
+         </div>
+
+         <div class="gallery">
+            <div class="gallery-item">
+               <img src="images/pawel-czerwinski-8RV896V7dgc-unsplash.jpg" alt="Like nature, but 3D">
+            </div>
+            <div class="gallery-item">
+               <img src="images/kyle-hinkson-l1KKiNCuVU0-unsplash.jpg" alt="Tasty thyme">
+            </div>
+            <div class="gallery-item">
+               <img src="images/wolfgang-hasselmann-rOwkwyBhh7M-unsplash.jpg" alt="Probably edible">
+            </div>
+            <div class="gallery-item">
+               <img src="images/shyamli-kashyap-5hJvuOA88hM-unsplash.jpg" alt="Flowering tree">
+            </div>
+            <div class="gallery-item selected">
+               <img src="images/gerda-DRWsX5SVUmU-unsplash.jpg" alt="Building">
+            </div>
+            <div class="gallery-item">
+               <img src="images/point-normal-Has3xeJVOGw-unsplash.jpg" alt="The shapes of icecream">
+            </div>
+            <div class="gallery-item">
+               <img src="images/paris-bilal-_vgMHuzx5kw-unsplash.jpg" alt="These look good">
+            </div>
+            <div class="gallery-item">
+               <img src="images/whoa-hummels-wrojLQZSMUc-unsplash.jpg" alt="Facade of a building">
+            </div>
+            <div class="gallery-item">
+               <img src="images/shepherd-I2pj8hHd3gg-unsplash.jpg" alt="Coastal view">
+            </div>
+            <div class="gallery-item">
+               <img src="images/shepherd-44F4nHgJJ2c-unsplash.jpg" alt="Floating still">
+            </div>
+            <div class="gallery-item">
+               <img src="images/srijan-mohan-gkHCHsbTu38-unsplash.jpg" alt="Looks cold">
+            </div>
+            <div class="gallery-item">
+               <img src="images/paris-bilal-gze3qn8lZZs-unsplash.jpg" alt="A seat for the soul">
+            </div>
+         </div>
+      </div>
+   </div>
+</body>
+
+<style>
+   * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+   }
+
+   body {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background-color: #000;
+      font-family: 'Roboto', sans-serif;
+   }
+
+   @keyframes gradient-animation {
+      0% {
+         background-position: 0% 50%;
+      }
+
+      50% {
+         background-position: 100% 50%;
+      }
+
+      100% {
+         background-position: 0% 50%;
+      }
+   }
+
+   #bg {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 0;
+
+      background-color: #000;
+      background-image:
+         radial-gradient(at 21% 11%, rgb(26, 26, 26) 0px, transparent 50%),
+         radial-gradient(at 26% 96%, rgb(0, 7, 10) 0px, transparent 50%),
+         radial-gradient(at 12% 66%, rgb(7, 10, 1) 0px, transparent 50%);
+
+      background-size: 180% 180%;
+      animation: gradient-animation 18s ease infinite;
+   }
+
+   .container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      transform-origin: center;
+      width: 1000px;
+      margin: 0 auto 2em auto;
+      padding: 1em 0.5em;
+      display: flex;
+      justify-content: center;
+   }
+
+   .indicator {
+      border: 2px solid #fff;
+      position: absolute;
+      width: 410px;
+      height: 410px;
+      transition: 1s left;
+      top: 11px;
+   }
+
+   .indicator .alt-text {
+      position: absolute;
+      top: 100%;
+      color: #fff;
+      font-size: 1.5em;
+      font-weight: bold;
+      text-transform: uppercase;
+      transition: all 0.5s;
+   }
+
+   .indicator .contact {
+      position: absolute;
+      top: -90px;
+   }
+
+   .contact a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      margin-right: 1em;
+      font-size: 1.5em;
+   }
+
+   .contact a:hover {
+      text-decoration: underline;
+   }
+
+   .gallery {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      width: 100%;
+      height: 400px;
+      overflow: hidden;
+   }
+
+   .gallery-item {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex: 0 1 30px;
+      height: 400px;
+      margin: 0 10px;
+      overflow: hidden;
+      transition: all 1s;
+      z-index: 1;
+   }
+
+   .gallery-item img {
+      width: 400px;
+      height: 100%;
+      object-fit: contain;
+      transform: scale(1.8);
+   }
+
+   .gallery-item.selected {
+      flex: 1 1 400px;
+   }
+</style>
+
+<script>
+   const galleryItems = document.querySelectorAll('.gallery-item');
+   const indicator = document.querySelector('.indicator');
+   const altTextElement = document.querySelector('.alt-text');
+
+   const collapsedItemWidth = 50;
+   const marginOffset = 12;
+   const animDelay = 50;
+   const startingImageIndex = Array.from(galleryItems).findIndex(item => item.classList.contains('selected'));
+
+   const selectedWidth = galleryItems[startingImageIndex].offsetWidth;
+   indicator.style.width = `${selectedWidth + marginOffset}px`;
+   let timeouts = [];
+
+   setIndicator(galleryItems[startingImageIndex], startingImageIndex);
+
+   function setIndicator(item, index) {
+      const left = (index * (collapsedItemWidth) + marginOffset);
+      indicator.style.left = `${left}px`;
+
+      const img = item.querySelector('img');
+      animateAltText(img.alt);
+   }
+
+   function animateAltText(newText) {
+      timeouts.forEach(clearTimeout);
+      timeouts = [];
+
+      let oldText = altTextElement.textContent;
+      let length = Math.max(oldText.length, newText.length) + 1;
+
+      for (let i = 0; i < length; i++) {
+         let timeout = setTimeout(() => {
+            altTextElement.textContent = newText.slice(0, i) + oldText.slice(i);
+         }, i * animDelay);
+
+         timeouts.push(timeout);
+      }
+   }
+
+   galleryItems.forEach((item, index) => {
+      item.addEventListener('mouseenter', () => {
+         galleryItems.forEach((item) => {
+            item.classList.remove('selected');
+         });
+
+         item.classList.add('selected');
+
+         setIndicator(item, index);
+      });
+
+   });
+
+</script>
