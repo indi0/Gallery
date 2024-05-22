@@ -101,9 +101,9 @@
 
       background-color: #000;
       background-image:
-         radial-gradient(at 21% 11%, rgb(26, 26, 26) 0px, transparent 50%),
-         radial-gradient(at 26% 96%, rgb(0, 7, 10) 0px, transparent 50%),
-         radial-gradient(at 12% 66%, rgb(7, 10, 1) 0px, transparent 50%);
+         radial-gradient(at 21% 11%, rgb(53, 13, 13) 0px, transparent 50%),
+         radial-gradient(at 26% 96%, rgb(9, 48, 65) 0px, transparent 50%),
+         radial-gradient(at 12% 66%, rgb(35, 49, 6) 0px, transparent 50%);
 
       background-size: 180% 180%;
       animation: gradient-animation 18s ease infinite;
@@ -125,9 +125,9 @@
    .indicator {
       border: 2px solid #fff;
       position: absolute;
-      width: 410px;
+      width: 426px;
       height: 410px;
-      transition: 1s left;
+      transition: 1s all;
       top: 11px;
    }
 
@@ -144,6 +144,7 @@
    .indicator .contact {
       position: absolute;
       top: -90px;
+      display: none;
    }
 
    .contact a {
@@ -190,6 +191,49 @@
    .gallery-item.selected {
       flex: 1 1 400px;
    }
+
+   @media (max-width: 1000px) {
+
+      .container {
+         width: 100%;
+         padding: 0;
+      }
+
+      .gallery {
+         flex-direction: column;
+         min-height: 650px;
+      }
+
+      .gallery-item {
+         flex: 0 1 25px;
+         margin: 5px 0;
+         width: 250px
+      }
+
+      .gallery-item img {
+         width: 100%;
+         object-fit: cover;
+         transform: scale(1.8);
+      }
+
+      .gallery-item.selected {
+         flex: 0 1 250px;
+      }
+
+      .indicator {
+         width: 260px;
+         height: 260px;
+         top: 0px;
+      }
+
+      .indicator .alt-text {
+         top: 0;
+         left: 0;
+         transform: rotate(90deg);
+         transform-origin: 0 0;
+         font-size: 1.2em;
+      }
+   }
 </style>
 
 <script>
@@ -197,20 +241,41 @@
    const indicator = document.querySelector('.indicator');
    const altTextElement = document.querySelector('.alt-text');
 
-   const collapsedItemWidth = 50;
-   const marginOffset = 12;
-   const animDelay = 50;
-   const startingImageIndex = Array.from(galleryItems).findIndex(item => item.classList.contains('selected'));
+   let startingImageIndex = getStartingImageIndex();
 
-   const selectedWidth = galleryItems[startingImageIndex].offsetWidth;
-   indicator.style.width = `${selectedWidth + marginOffset}px`;
+   let isMobile = window.innerWidth <= 1000;
+
    let timeouts = [];
 
    setIndicator(galleryItems[startingImageIndex], startingImageIndex);
 
+   // Support rezing without refreshing
+   window.onresize = function () {
+      if(window.innerWidth <= 1000 && !isMobile) {
+         startingImageIndex = getStartingImageIndex();
+         isMobile = true;
+         setIndicator(galleryItems[startingImageIndex], startingImageIndex);
+      } else if (window.innerWidth > 1000 && isMobile) {
+         startingImageIndex = getStartingImageIndex();
+         isMobile = false;
+         setIndicator(galleryItems[startingImageIndex], startingImageIndex);
+         indicator.style.top = '11px';
+      }
+   };
+
+   function getStartingImageIndex() {
+      return Array.from(galleryItems).findIndex(item => item.classList.contains('selected'));
+   }
+
    function setIndicator(item, index) {
-      const left = (index * (collapsedItemWidth) + marginOffset);
-      indicator.style.left = `${left}px`;
+      if (isMobile) {
+         let offset = (index * (35 + 1 / 3));
+         indicator.style.top = `${offset}px`;
+         indicator.style.left = '';
+      } else {
+         let offset = (index * (50) + 12);
+         indicator.style.left = `${offset}px`;
+      }
 
       const img = item.querySelector('img');
       animateAltText(img.alt);
@@ -222,11 +287,12 @@
 
       let oldText = altTextElement.textContent;
       let length = Math.max(oldText.length, newText.length) + 1;
+      let textAnimDelay = 50;
 
       for (let i = 0; i < length; i++) {
          let timeout = setTimeout(() => {
             altTextElement.textContent = newText.slice(0, i) + oldText.slice(i);
-         }, i * animDelay);
+         }, i * textAnimDelay);
 
          timeouts.push(timeout);
       }
